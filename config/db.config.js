@@ -1,7 +1,7 @@
 module.exports = {
-    HOST: "localhost",
-    USER: "root",
-    PASSWORD: "root",
+    HOST: "node-test-do-user-7131280-0.b.db.ondigitalocean.com",
+    USER: "doadmin",
+    PASSWORD: "w0964tjxfqavjbhp",
     DB: "node",
     dialect: "mysql",
     pool: {
