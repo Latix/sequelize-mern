@@ -1,5 +1,6 @@
 const db = require("../models");
 const Tutorial = db.tutorials;
+const Comment = db.comments;
 const Op = db.Sequelize.Op;
 const { getPagination, getPagingData } = require('../utils/functions');
 
@@ -33,6 +34,36 @@ exports.create = (req, res) => {
     });
 };
 
+exports.createComment = (req, res) => {
+  Comment.create({
+    name: req.body.name,
+    text: req.body.text,
+    tutorialId: req.body.tutorialId,
+  })
+    .then((comment) => {
+      res.send(comment);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err
+      });
+    });
+};
+
+// Find a single Comment with an id
+exports.findCommentById = (req, res) => {
+  const id = req.params.id;
+  Comment.findByPk(id, { include: ["tutorial"] })
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: err
+      });
+    });
+};
+
 // Retrieve all Tutorials from the database.
 exports.findAll = (req, res) => {
     let { page, size, title } = req.query;
@@ -60,7 +91,7 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
     const id = req.params.id;
 
-    Tutorial.findByPk(id)
+    Tutorial.findByPk(id, { include: ["comments"] })
       .then(data => {
         res.send(data);
       })
